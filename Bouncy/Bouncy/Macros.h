@@ -12,14 +12,15 @@
 #include <utility>
 #include <vector>
 #include <cstdlib>
+#include <ctime>
 
-#define POINT std::pair<int, std::pair<int, int>>
+#define POINT std::pair<double, std::pair<double, double>>
 #define MAKE_POINT(x,y,z) std::make_pair(x, std::make_pair(y, z))
 #define X first
 #define Y second.first
 #define Z second.second
 
-#define COLOR POINT
+#define COLOR std::pair<double, std::pair<double, double>>
 #define MAKE_COLOR(x,y,z) MAKE_POINT(x,y,z)
 #define R X
 #define G Y
