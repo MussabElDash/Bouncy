@@ -17,7 +17,8 @@ public:
     void draw();
     int getScore(POINT center, int radius);
 private:
-    std::vector<std::vector<POINT> > wallColors;
+    std::vector<std::vector<std::vector<COLOR>>> wallColors;
+    int getCellScore(POINT point);
 };
 
 #endif /* defined(__Bouncy__Wall__) */

@@ -1,6 +1,6 @@
 #include <cstdio>
 #include <functional>
-#include <GL/glut.h>
+#include "PlatformCompatibility.h"
 
 double eyeX, eyeY, eyeZ, centerX, centerY, centerZ;
 double x = 1.0, y = 1.0, z = 0.0;
