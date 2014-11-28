@@ -3,14 +3,19 @@
 #include "PlatformCompatibility.h"
 
 double eyeX, eyeY, eyeZ, centerX, centerY, centerZ;
-double x = 1.0, y = 1.0, z = 0.0;
+double x = 1.0, y = 1.0, z = 5.0;
+int arrowAngle = 0;
+float  ballRadius = 0.5;
+bool stopped = 0;
 
 void timer(int v) {
-	x += 0.01;
-	y += 0.01;
-	z += 0.01;
-	glutTimerFunc(10, timer, 1); 
-	glutPostRedisplay();
+    if(!stopped){
+	   x += 0.01;
+	   y += 0.01;
+	   z += 0.01;
+    }
+	glutTimerFunc(10, timer, 1);
+    glutPostRedisplay();
 }
 
 void wall(double thickness){
@@ -20,6 +25,7 @@ void wall(double thickness){
     glutSolidCube(1);
     glPopMatrix();
 }
+
 void house(double size)
 {
     // Drawing the walls
@@ -55,10 +61,22 @@ void house(double size)
     glPopMatrix();
 }
 
+void drawArrowIfPossible(){
+    if(stopped){
+        glPushMatrix();
+        glRotated(10.0*(arrowAngle), 0.0, 0.0, 1.0);
+        glTranslated(0.0, ballRadius + 0.05, 0.0);
+        glRotated(-90, 1.0, 0.0, 0.0);
+        glutSolidCone(ballRadius/2, ballRadius/1.5, 100, 100);
+        glPopMatrix();
+    }
+}
+
 void drawSphere(void){
     glPushMatrix();
     glTranslated(x, y, z);
-    glutWireSphere(0.15, 100, 100);
+    glutWireSphere(ballRadius, 100, 100);
+    drawArrowIfPossible();
     glPopMatrix();
 }
 
@@ -73,7 +91,8 @@ void displayWire(void)
     //set the camera
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
+    // gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
+    gluLookAt(x, y, z + 10, x, y, z, 0, 1, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     drawSphere();
@@ -97,10 +116,24 @@ void displayWire(void)
     glPopMatrix();
     glFlush();
 }
+
 void mySpecial(int key, int x, int y)
 {
     switch (key){
-
+        case GLUT_KEY_RIGHT:
+            if(stopped)
+                arrowAngle--;
+            break;
+        case GLUT_KEY_LEFT:
+            if(stopped)
+                arrowAngle++;
+            break;
+        case GLUT_KEY_UP:
+            stopped = 1;
+            break;
+        case GLUT_KEY_DOWN:
+            stopped = 0;
+            break;
     }
     
     glutPostRedisplay();
@@ -144,12 +177,12 @@ int main(int argc, char** argv)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_NORMALIZE);
     glClearColor(1.0, 1.0, 1.0, 0.0);
-    eyeX = 0.5;
-    eyeY = 10;
-    eyeZ = 8;
-    centerX = 10.0;
-    centerY = 1;
-    centerZ = 0.0;
+    eyeX = 4;
+    eyeY = 0;
+    eyeZ = 20;
+    centerX = 4;
+    centerY = 0;
+    centerZ = 0;
     //set the light source properties
     GLfloat lightIntensity[] = { 0.7f, 0.7f, 1, 1.0f };
     GLfloat light_position[] = { 7.0f, 6.0f, 3.0f, 0.0f };
