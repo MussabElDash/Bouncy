@@ -1,6 +1,6 @@
-#include <GLUT/GLUT.h>
 #include <cstdio>
 #include <functional>
+#include <glut.h>
 
 double eyeX, eyeY, eyeZ, centerX, centerY, centerZ;
 
@@ -80,7 +80,7 @@ void displayWire(void)
 void mySpecial(int key, int x, int y)
 {
     switch (key){
-            
+
     }
     
     glutPostRedisplay();

@@ -32,3 +32,14 @@
 *.xcuserstate
 *.xcworkspacedata
 Bouncy/Bouncy.xcodeproj/
+
+#VS Files
+ipch/
+Debug/
+*.vcxproj
+*.filters
+Bouncy/Debug/
+*.opensdf
+*.sdf
+*.sln
+*.suo
