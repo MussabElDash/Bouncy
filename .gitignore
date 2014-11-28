@@ -43,3 +43,6 @@ Bouncy/Debug/
 *.sdf
 *.sln
 *.suo
+
+#Platform Compatibility
+Bouncy/Bouncy/PlatformCompatibility.h
