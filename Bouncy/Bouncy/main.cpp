@@ -7,11 +7,11 @@ double eyeX, eyeY, eyeZ, centerX, centerY, centerZ;
 double x = 1.0, y = 1.0, z = 0.0;
 
 void timer(int v) {
-	x += 0.01;
-	y += 0.01;
-	z += 0.01;
-	glutTimerFunc(10, timer, 1);
-	glutPostRedisplay();
+    x += 0.01;
+    y += 0.01;
+    z += 0.01;
+    glutTimerFunc(10, timer, 1);
+    glutPostRedisplay();
 }
 
 void beginQuads(){
@@ -68,12 +68,15 @@ Wall w = Wall(MAKE_POINT(0, 0, 0),
               glTranslated,
               glScaled,
               glutSolidCube,
-              glColor3d,
-              beginQuads,
-              glEnd,
-              glVertex3d);
+              glColor3d);
 
 
+void drawSphere(void){
+    glPushMatrix();
+    glTranslated(x, y, z);
+    glutWireSphere(0.15, 100, 100);
+    glPopMatrix();
+}
 
 void displayWire(void)
 {
@@ -89,29 +92,26 @@ void displayWire(void)
     glLoadIdentity();
     gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	/*glPushMatrix();
-	glTranslated(x, y, z);
-	glutWireSphere(0.15, 100, 100);
-	glPopMatrix();
     
-	house(0.02);
-    // Drawing the first row
-    glPushMatrix();
-    for (int i = 0; i<5; i++){
-        glTranslated(1.5, 0.0, 0.0);
-        house(0.02);
-    }
-    glPopMatrix();
-    // Drawing the second row
-    glPushMatrix();
-    glTranslated(0, 0, 5);
-    house(0.02);
-    for (int j = 0; j<5; j++){
-        glTranslated(1.5, 0.0, 0.0);
-        house(0.02);
-    }
-    glPopMatrix();*/
+    drawSphere();
+    
+    /*house(0.02);
+     // Drawing the first row
+     glPushMatrix();
+     for (int i = 0; i<5; i++){
+     glTranslated(1.5, 0.0, 0.0);
+     house(0.02);
+     }
+     glPopMatrix();
+     // Drawing the second row
+     glPushMatrix();
+     glTranslated(0, 0, 5);
+     house(0.02);
+     for (int j = 0; j<5; j++){
+     glTranslated(1.5, 0.0, 0.0);
+     house(0.02);
+     }
+     glPopMatrix();*/
     
     // Testing wall
     w.draw();
@@ -121,7 +121,7 @@ void displayWire(void)
 void mySpecial(int key, int x, int y)
 {
     switch (key){
-
+            
     }
     
     glutPostRedisplay();
@@ -149,8 +149,7 @@ void* pass(int (*f)(int)){
 int main(int argc, char** argv)
 {
     srand(time(nullptr));
-    
-    printf("%s\n", (char*)pass(print));
+    // printf("%s\n", (char*)pass(print));
     glutInit(&argc, argv); // initialize the toolkit
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH); // set
     //display mode
@@ -160,7 +159,7 @@ int main(int argc, char** argv)
     glutCreateWindow("Bouncy"); // open the screen window
     glutDisplayFunc(displayWire); // register redraw function
     glutSpecialFunc(mySpecial);
-	glutTimerFunc(1, timer, 1);
+    glutTimerFunc(1, timer, 1);
     //glEnable(GL_LIGHTING);
     //glEnable(GL_LIGHT0);
     //glShadeModel(GL_SMOOTH);
@@ -175,10 +174,10 @@ int main(int argc, char** argv)
     centerY = -2;
     centerZ = 10;
     //set the light source properties
-   // GLfloat lightIntensity[] = { 0.7f, 0.7f, 1, 1.0f };
-   // GLfloat light_position[] = { 7.0f, 6.0f, 3.0f, 0.0f };
-   // glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-   // glLightfv(GL_LIGHT0, GL_DIFFUSE, lightIntensity);
+    // GLfloat lightIntensity[] = { 0.7f, 0.7f, 1, 1.0f };
+    // GLfloat light_position[] = { 7.0f, 6.0f, 3.0f, 0.0f };
+    // glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    // glLightfv(GL_LIGHT0, GL_DIFFUSE, lightIntensity);
     glutMainLoop(); // go into a perpetual loop
     return 0;
 }
