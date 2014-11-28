@@ -1,15 +1,15 @@
 #include <cstdio>
 #include <functional>
-#include <glut.h>
+#include <GL/glut.h>
 
 double eyeX, eyeY, eyeZ, centerX, centerY, centerZ;
 double x = 1.0, y = 1.0, z = 0.0;
 
 void timer(int v) {
-	x += 0.3;
-	y += 0.3;
-	z += 0.3;
-	glutTimerFunc(1000, timer, 1); 
+	x += 0.01;
+	y += 0.01;
+	z += 0.01;
+	glutTimerFunc(10, timer, 1); 
 	glutPostRedisplay();
 }
 
@@ -54,6 +54,14 @@ void house(double size)
     glutSolidCone(0.9, 0.5, 4, 9);
     glPopMatrix();
 }
+
+void drawSphere(void){
+    glPushMatrix();
+    glTranslated(x, y, z);
+    glutWireSphere(0.15, 100, 100);
+    glPopMatrix();
+}
+
 void displayWire(void)
 {
     //set the world
@@ -67,11 +75,8 @@ void displayWire(void)
     glLoadIdentity();
     gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	glPushMatrix();
-	glTranslated(x, y, z);
-	glutWireSphere(0.15, 10, 10);
-	glPopMatrix();
+
+    drawSphere();
     
 	house(0.02);
     // Drawing the first row
@@ -122,7 +127,7 @@ void* pass(int (*f)(int)){
 
 int main(int argc, char** argv)
 {
-    printf("%s\n", (char*)pass(print));
+    // printf("%s\n", (char*)pass(print));
     glutInit(&argc, argv); // initialize the toolkit
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH); // set
     //display mode
