@@ -129,7 +129,7 @@ int main(int argc, char** argv)
     glutInitWindowSize(640, 480); // set window size
     glutInitWindowPosition(200, 150); // set window position on
     //screen
-    glutCreateWindow("Colored Dots"); // open the screen window
+    glutCreateWindow("Bouncy"); // open the screen window
     glutDisplayFunc(displayWire); // register redraw function
     glutSpecialFunc(mySpecial);
 	glutTimerFunc(1, timer, 1);
