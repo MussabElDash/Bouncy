@@ -1,8 +1,17 @@
-#include <GLUT/GLUT.h>
 #include <cstdio>
 #include <functional>
+#include <glut.h>
 
 double eyeX, eyeY, eyeZ, centerX, centerY, centerZ;
+double x = 1.0, y = 1.0, z = 0.0;
+
+void timer(int v) {
+	x += 0.3;
+	y += 0.3;
+	z += 0.3;
+	glutTimerFunc(1000, timer, 1); 
+	glutPostRedisplay();
+}
 
 void wall(double thickness){
     glPushMatrix();
@@ -58,7 +67,13 @@ void displayWire(void)
     glLoadIdentity();
     gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    house(0.02);
+	
+	glPushMatrix();
+	glTranslated(x, y, z);
+	glutWireSphere(0.15, 10, 10);
+	glPopMatrix();
+    
+	house(0.02);
     // Drawing the first row
     glPushMatrix();
     for (int i = 0; i<5; i++){
@@ -80,7 +95,7 @@ void displayWire(void)
 void mySpecial(int key, int x, int y)
 {
     switch (key){
-            
+
     }
     
     glutPostRedisplay();
@@ -114,9 +129,10 @@ int main(int argc, char** argv)
     glutInitWindowSize(640, 480); // set window size
     glutInitWindowPosition(200, 150); // set window position on
     //screen
-    glutCreateWindow("Colored Dots"); // open the screen window
+    glutCreateWindow("Bouncy"); // open the screen window
     glutDisplayFunc(displayWire); // register redraw function
     glutSpecialFunc(mySpecial);
+	glutTimerFunc(1, timer, 1);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glShadeModel(GL_SMOOTH);
