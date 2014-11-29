@@ -13,9 +13,12 @@
 
 class Wall{
 public:
+    POINT planeVector;
+
     Wall(POINT startCorner,
          POINT endCorner,
          POINT deltaVector,
+         POINT planeVector,
          void (*pushMatrix)(),
          void (*popMatrix)(),
          void (*translate)(double, double, double),
@@ -24,12 +27,13 @@ public:
          void (*clearColor)(double, double, double));
     
     void draw();
-    int getScore(POINT center, int radius);
+    int getScore(POINT center, double radius);
 private:
     POINT size;
     POINT startCorner;
     POINT endCorner;
     POINT deltaVector;
+    double epsilon = 0.0;
     std::vector<std::vector<std::vector<COLOR>>> wallColors;
     
     int getCellScore(POINT point);

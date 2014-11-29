@@ -13,6 +13,8 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <string>
+#include <cmath>
 
 #define POINT std::pair<double, std::pair<double, double>>
 #define MAKE_POINT(x,y,z) std::make_pair(x, std::make_pair(y, z))

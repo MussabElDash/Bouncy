@@ -11,6 +11,7 @@
 Wall::Wall(POINT startCorner,
            POINT endCorner,
            POINT deltaVector,
+           POINT planeVector,
            void (*pushMatrix)(),
            void (*popMatrix)(),
            void (*translate)(double, double, double),
@@ -20,6 +21,7 @@ Wall::Wall(POINT startCorner,
     this->startCorner = startCorner;
     this->endCorner = endCorner;
     this->deltaVector = deltaVector;
+    this->planeVector = planeVector;
     
     this->pushMatrix = pushMatrix;
     this->popMatrix = popMatrix;
@@ -29,10 +31,12 @@ Wall::Wall(POINT startCorner,
     this->clearColor = clearColor;
     
     printf("%lf %lf %lf\n", deltaVector.X, startCorner.X, endCorner.X);
-    int xSize = (endCorner.X - startCorner.X) / deltaVector.X;
-    int ySize = (endCorner.Y - startCorner.Y) / deltaVector.Y;
-    int zSize = (endCorner.Z - startCorner.Z) / deltaVector.Z;
+    int xSize = fabs(endCorner.X - startCorner.X) / deltaVector.X;
+    int ySize = fabs(endCorner.Y - startCorner.Y) / deltaVector.Y;
+    int zSize = fabs(endCorner.Z - startCorner.Z) / deltaVector.Z;
     
+    epsilon = deltaVector.X * planeVector.X + deltaVector.Y * planeVector.Y + deltaVector.Z * planeVector.Z;
+
     this->size = MAKE_COLOR(xSize, ySize, zSize);
     for(int x = 0; x < xSize; x++){
         std::vector<std::vector<COLOR>> additx;
@@ -70,11 +74,37 @@ void Wall::drawCube(COLOR cubeCell){
 }
 
 // If the ball hits this wall, returns the score of this hit, else return 0
-int Wall::getScore(POINT center, int radius){
+int Wall::getScore(POINT center, double radius){
+    double distX = fmin(fabs(center.X - startCorner.X), fabs(center.X - endCorner.X));
+    double distY = fmin(fabs(center.Y - startCorner.Y), fabs(center.Y - endCorner.Y));
+    double distZ = fmin(fabs(center.Z - startCorner.Z), fabs(center.Z - endCorner.Z));
+    distX *= planeVector.X;
+    distY *= planeVector.Y;
+    distZ *= planeVector.Z;
+    //printf("%lf %lf %lf, %lf %lf %lf\n", center.X, center.Y, center.Z, distX, distY, distZ);
+    if(distX + distY + distZ <= epsilon + radius * 9.0 / 10 - 1e-9){
+        return -111111111;
+    }
+    if(distX + distY + distZ <= radius + 1e-9 + epsilon && distX + distY + distZ >= epsilon + radius * 9.0 / 10 - 1e-9){
+        center.X = fabs((center.X - startCorner.X) / deltaVector.X);
+        center.Y = fabs((center.Y - startCorner.Y) / deltaVector.Y);
+        center.Z = fabs((center.Z - startCorner.Z) / deltaVector.Z);
+
+        center.X *= 1 - planeVector.X;
+        center.Y *= 1 - planeVector.Y;
+        center.Z *= 1 - planeVector.Z;
+
+        //printf("..... %lf %lf %lf %lf %lf %lf\n", center.X, center.Y, center.Z, planeVector.X, planeVector.Y, planeVector.Z);
+        //printf("%lf %lf %lf\n", size.X, size.Y, size.Z);
+        return getCellScore(center);
+    }
     return 0;
 }
 
 int Wall::getCellScore(POINT point){
-    COLOR color = wallColors[point.X][point.Y][point.Z];
-    return (color.R - color.G) * color.B;
+    //printf("done1\n");
+    COLOR color = wallColors[(int)(point.X)][(int)(point.Y)][(int)(point.Z)];
+    //printf("done2 %lf\n", (color.R - color.G) * color.B * 100.0);
+    int score = (color.G - color.B) * color.R * 100.0;
+    return score == 0 ? 1 : score;
 }
