@@ -30,7 +30,7 @@ Wall::Wall(POINT startCorner,
     this->cube = cube;
     this->clearColor = clearColor;
     
-    printf("%lf %lf %lf\n", deltaVector.X, startCorner.X, endCorner.X);
+    // printf("%lf %lf %lf\n", deltaVector.X, startCorner.X, endCorner.X);
     int xSize = fabs(endCorner.X - startCorner.X) / deltaVector.X;
     int ySize = fabs(endCorner.Y - startCorner.Y) / deltaVector.Y;
     int zSize = fabs(endCorner.Z - startCorner.Z) / deltaVector.Z;

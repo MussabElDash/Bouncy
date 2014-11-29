@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstring>
 #include <functional>
 #include "PlatformCompatibility.h"
 #include "Wall.h"
@@ -209,7 +210,6 @@ void displayWire(void)
 
     sprintf((char*)stC, "Camera Mode: %s", slowMotion == 1 ? "Slow Motion" : "Normal");
     print(eyeX + 5, eyeY + 1, eyeZ + 10, (char*)stC);
-    glColor3d(1, 1, 1);
 
     glFlush();
 }
